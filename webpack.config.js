@@ -10,55 +10,55 @@ const config = {
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
-        sourcePrefix : ''
+        sourcePrefix: ''
     },
     module: {
-         unknownContextCritical: false,
-         rules: [
+        unknownContextCritical: false,
+        rules: [
             {
-                test:  /\.vue$/,
+                test: /\.vue$/,
                 loader: 'vue-loader'
             },
-             {
-                 test: /\.css$/,
-                 use: ['style-loader','css-loader']
-             },
-             {
-                 test: /\.(gif|jpg|jpeg|png|svg)$/,
-                 use: [{
-                     loader: 'url-loader',
-                     options: {
-                         limit: 1024,
-                         name: '[name].[ext]'
-                     }
-                 }]
-             },
-             {
-                 test: /\.styl$/,
-                 use: [{
-                     loader: 'style-loader' // creates style nodes from JS strings
-                 }, {
-                     loader: 'css-loader' // translates CSS into CommonJS
-                 }, {
-                     loader: 'stylus-loader' // compiles Less to CSS
-                 }]
-             }
-         ]
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.(gif|jpg|jpeg|png|svg)$/,
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        limit: 1024,
+                        name: '[name].[ext]'
+                    }
+                }]
+            },
+            {
+                test: /\.styl$/,
+                use: [{
+                    loader: 'style-loader' // creates style nodes from JS strings
+                }, {
+                    loader: 'css-loader' // translates CSS into CommonJS
+                }, {
+                    loader: 'stylus-loader' // compiles Less to CSS
+                }]
+            }
+        ]
     },
     plugins: [
         // make sure to include the plugin for the magic
         new VueLoaderPlugin(),
         new Webpack.DefinePlugin({
-           'process.env':{
-               NODE_ENV: isDev ? '"development"' : '"production"'
-           }
+            'process.env': {
+                NODE_ENV: isDev ? '"development"' : '"production"'
+            }
         }),
         new HtmlWebpackPlugin({
             template: './index.html'  // 模板
         })
     ],
 
-
+}
 
 if (isDev) {
   config.devServer = {
