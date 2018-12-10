@@ -5,14 +5,21 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node_modules/.bin/webpack --config webpack.config.js",
-    "start": "node_modules/.bin/webpack-dev-server --config webpack.config.js --open"
+    "build": "node_modules/.bin/webpack --config webpack.config.js --mode production",
+    "start": "node_modules/.bin/webpack-dev-server --config webpack.config.js --mode development --open "
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "autoprefixer": "^9.4.2",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.4",
+    "babel-plugin-transform-vue-jsx": "^3.7.0",
+    "babel-preset-env": "^1.7.0",
     "css-loader": "^1.0.1",
     "file-loader": "^2.0.0",
+    "postcss-load-config": "^2.0.0",
+    "postcss-loader": "^3.0.0",
     "style-loader": "^0.23.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",

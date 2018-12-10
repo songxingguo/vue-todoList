@@ -14,7 +14,10 @@ const config = {
     module: {
         rules: [{
             test: /\.vue$/,
-            loader: 'vue-loader'
+            use: ['vue-loader', 'style-loader', 'css-loader', 'stylus-loader']
+        }, {
+            test: /\.jsx$/,
+            loader: 'babel-loader'
         }, {
             test: /\.css$/,
             use: [ 'style-loader', 'css-loader' ]
@@ -28,21 +31,23 @@ const config = {
             }, {
                 loader: 'css-loader' // translates CSS into CommonJS
             }, {
+                loader: 'postcss-loader',
+                options: {
+                    sourceMap: true,
+                }
+            }, {
                 loader: 'stylus-loader' // compiles Less to CSS
             }]
         }]
     },
     plugins: [
-        // make sure to include the plugin for the magic
         new VueLoaderPlugin(),
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: isDev ? '"development"' : '"production"'
             }
         }),
-        new HtmlWebpackPlugin({
-            template: 'src/index.html'
-        })
+        new HtmlWebpackPlugin()
     ]
 }
 
