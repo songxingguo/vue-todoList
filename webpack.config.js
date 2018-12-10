@@ -1,14 +1,19 @@
-const path = require('path')
+const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Webpack = require('webpack');
+const isDev = process.env.NODE_ENV === "development";
 
-module.exports = {
+const config = {
     mode: 'production',
-    entry: path.join(__dirname, 'src/index.js'),
+    entry: path.resolve(__dirname, 'src/index.js'),
     output: {
         filename: 'bundle.js',
-        path: path.join(__dirname, 'dist')
+        path: path.resolve(__dirname, 'dist'),
+        sourcePrefix : ''
     },
     module: {
+         unknownContextCritical: false,
          rules: [
             {
                 test:  /\.vue$/,
@@ -42,6 +47,32 @@ module.exports = {
     },
     plugins: [
         // make sure to include the plugin for the magic
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        new Webpack.DefinePlugin({
+           'process.env':{
+               NODE_ENV: isDev ? '"development"' : '"production"'
+           }
+        }),
+        new HtmlWebpackPlugin({
+            template: './index.html'  // 模板
+        })
     ],
+
+
+
+if (isDev) {
+  config.devServer = {
+      port: 8000,
+      host: '0.0.0.0',
+      overlay: {
+          errors: true,
+      },
+      // historyFallback: {
+      //
+      // },
+      // open: true,
+      hot: true
+  }
 }
+
+module.exports = config
