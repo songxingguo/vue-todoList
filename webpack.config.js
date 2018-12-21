@@ -5,6 +5,7 @@ const webpack = require('webpack');
 const isDev = process.env.NODE_ENV === "development";
 
 const config = {
+    target: "web",
     context: __dirname,
     entry: path.resolve(__dirname, 'src/index.js'),
     output: {
@@ -20,11 +21,11 @@ const config = {
             loader: 'babel-loader'
         }, {
             test: /\.css$/,
-            use: [ 'style-loader', 'css-loader' ]
+            use: ['style-loader', 'css-loader']
         }, {
             test: /\.(png|gif|jpg|jpeg|svg|xml|json)$/,
-            use: [ 'url-loader' ]
-        },  {
+            use: ['url-loader']
+        }, {
             test: /\.styl$/,
             use: [{
                 loader: 'style-loader' // creates style nodes from JS strings
@@ -47,24 +48,28 @@ const config = {
                 NODE_ENV: isDev ? '"development"' : '"production"'
             }
         }),
-        new HtmlWebpackPlugin()
+        new HtmlWebpackPlugin(
+            {
+                template: "./index.html"
+            }
+        )
     ]
 }
 
 if (isDev) {
-    config.devTool = '#cheap-module-eval-source-map'
-  config.devServer = {
-      port: 8000,
-      host: '0.0.0.0',
-      overlay: {
-          errors: true,
-      },
-      hot: true,
-  }
-  config.plugins.push(
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.NormalModuleReplacementPlugin()
-  )
+    config.devtool = '#cheap-module-eval-source-map'
+    config.devServer = {
+        port: 8000,
+        host: '0.0.0.0',
+        overlay: {
+            errors: true,
+        },
+        hot: true,
+    }
+    config.plugins.push(
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NormalModuleReplacementPlugin()
+    )
 }
 
 module.exports = config
