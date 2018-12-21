@@ -5,7 +5,6 @@ const webpack = require('webpack');
 const isDev = process.env.NODE_ENV === "development";
 
 const config = {
-    target: "web",
     context: __dirname,
     entry: path.resolve(__dirname, 'src/index.js'),
     output: {
@@ -15,49 +14,40 @@ const config = {
     module: {
         rules: [{
             test: /\.vue$/,
-            use: ['vue-loader', 'style-loader', 'css-loader', 'stylus-loader']
-        }, {
-            test: /\.jsx$/,
-            loader: 'babel-loader'
+            loader: 'vue-loader'
         }, {
             test: /\.css$/,
-            use: ['style-loader', 'css-loader']
+            use: [ 'style-loader', 'css-loader' ]
         }, {
             test: /\.(png|gif|jpg|jpeg|svg|xml|json)$/,
-            use: ['url-loader']
-        }, {
+            use: [ 'url-loader' ]
+        },  {
             test: /\.styl$/,
             use: [{
                 loader: 'style-loader' // creates style nodes from JS strings
             }, {
                 loader: 'css-loader' // translates CSS into CommonJS
             }, {
-                loader: 'postcss-loader',
-                options: {
-                    sourceMap: true,
-                }
-            }, {
                 loader: 'stylus-loader' // compiles Less to CSS
             }]
         }]
     },
     plugins: [
+        // make sure to include the plugin for the magic
         new VueLoaderPlugin(),
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: isDev ? '"development"' : '"production"'
             }
         }),
-        new HtmlWebpackPlugin(
-            {
-                template: "./index.html"
-            }
-        )
+        new HtmlWebpackPlugin({
+            template: 'index.html'
+        })
     ]
 }
 
 if (isDev) {
-    config.devtool = '#cheap-module-eval-source-map'
+    config.devTool = '#cheap-module-eval-source-map'
     config.devServer = {
         port: 8000,
         host: '0.0.0.0',
