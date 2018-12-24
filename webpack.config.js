@@ -14,19 +14,27 @@ const config = {
     module: {
         rules: [{
             test: /\.vue$/,
-            loader: 'vue-loader'
+            use: ['vue-loader']
         }, {
             test: /\.css$/,
             use: [ 'style-loader', 'css-loader' ]
         }, {
             test: /\.(png|gif|jpg|jpeg|svg|xml|json)$/,
             use: [ 'url-loader' ]
-        },  {
-            test: /\.styl$/,
+        }, {
+            test: /\.jsx$/,
+            loader: "babel-loader"
+        }, {
+            test: /\.styl/,
             use: [{
                 loader: 'style-loader' // creates style nodes from JS strings
             }, {
                 loader: 'css-loader' // translates CSS into CommonJS
+            }, {
+                loader: "postcss-loader",
+                options: {
+                    sourceMap: true
+                }
             }, {
                 loader: 'stylus-loader' // compiles Less to CSS
             }]
@@ -47,18 +55,19 @@ const config = {
 }
 
 if (isDev) {
-    config.devTool = '#cheap-module-eval-source-map'
+    config.devtool = '#cheap-module-eval-source-map'
     config.devServer = {
         port: 8000,
         host: '0.0.0.0',
-        overlay: {
-            errors: true,
-        },
+        // overlay: {
+        //     errors: true,
+        // },
+        open: true,
         hot: true,
     }
     config.plugins.push(
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NormalModuleReplacementPlugin()
+        // new webpack.NormalModuleReplacementPlugin()
     )
 }
 
