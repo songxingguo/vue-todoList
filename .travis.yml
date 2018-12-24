@@ -7,14 +7,13 @@ install:
   - npm install
 
 before_script:
- # - npm install -g gulp
+# - npm install -g gulp
 
 script:
-  - hexo clean
-  - hexo g
+  - npm run build
 
 after_script:
-  - cd ./public
+  - cd ./dist
   - git init
   - git config user.name "songxingguo"
   - git config user.email "1328989942@qq.com"
@@ -30,7 +29,6 @@ branches:
   only:
     - master
 env:
- global:
-  # Github Pages
-  - GH_REF: github.com/songxingguo/vue-todoList.git
-
+  global:
+    # Github Pages
+    - GH_REF: github.com/songxingguo/vue-todoList.git
