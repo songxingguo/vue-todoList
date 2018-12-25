@@ -72,6 +72,10 @@ if (isDev) {
         // new webpack.NormalModuleReplacementPlugin()
     )
 } else {
+    config.entry = {
+        app: path.join(__dirname, 'src/index.js'),
+        vendor: ['vue']
+    }
     config.output.filename = '[name].[chunkhash:8].js';
     config.module.rules.push({
         test: /\.styl/,
@@ -92,6 +96,11 @@ if (isDev) {
     config.plugins.push(
         new ExtractPlugin('styles.[hash:8].css')
     )
+    config.optimization = {
+        splitChunks: {
+            name: 'vendor'
+        }
+    }
 }
 
 module.exports = config
