@@ -3,12 +3,13 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const isDev = process.env.NODE_ENV === "development";
+const ExtractPlugin = require('extract-text-webpack-plugin');
 
 const config = {
     context: __dirname,
     entry: path.resolve(__dirname, 'src/index.js'),
     output: {
-        filename: '[name].js',
+        filename: 'bundle.[hash:8].js',
         path: path.resolve(__dirname, 'dist'),
     },
     module: {
@@ -24,20 +25,6 @@ const config = {
         }, {
             test: /\.jsx$/,
             loader: "babel-loader"
-        }, {
-            test: /\.styl/,
-            use: [{
-                loader: 'style-loader' // creates style nodes from JS strings
-            }, {
-                loader: 'css-loader' // translates CSS into CommonJS
-            }, {
-                loader: "postcss-loader",
-                options: {
-                    sourceMap: true
-                }
-            }, {
-                loader: 'stylus-loader' // compiles Less to CSS
-            }]
         }]
     },
     plugins: [
@@ -55,6 +42,21 @@ const config = {
 }
 
 if (isDev) {
+    config.module.rules.push({
+        test: /\.styl/,
+        use: [{
+            loader: 'style-loader' // creates style nodes from JS strings
+        }, {
+            loader: 'css-loader' // translates CSS into CommonJS
+        }, {
+            loader: "postcss-loader",
+            options: {
+                sourceMap: true
+            }
+        }, {
+            loader: 'stylus-loader' // compiles Less to CSS
+        }]
+    })
     config.devtool = '#cheap-module-eval-source-map'
     config.devServer = {
         port: 8000,
@@ -68,6 +70,27 @@ if (isDev) {
     config.plugins.push(
         new webpack.HotModuleReplacementPlugin(),
         // new webpack.NormalModuleReplacementPlugin()
+    )
+} else {
+    config.output.filename = '[name].[chunkhash:8].js';
+    config.module.rules.push({
+        test: /\.styl/,
+        use: ExtractPlugin.extract({
+            fallback: 'style-loader',
+            use: [{
+                loader: 'css-loader' // translates CSS into CommonJS
+            }, {
+                loader: "postcss-loader",
+                options: {
+                    sourceMap: true
+                }
+            }, {
+                loader: 'stylus-loader' // compiles Less to CSS
+            }]
+        })
+    })
+    config.plugins.push(
+        new ExtractPlugin('styles.[hash:8].css')
     )
 }
 

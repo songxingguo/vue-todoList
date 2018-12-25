@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node_modules/.bin/webpack --config webpack.config.js --mode production",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.js",
     "start": "node_modules/.bin/webpack-dev-server --config webpack.config.js --mode development --open ",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.js"
   },
@@ -42,7 +42,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "clean-webpack-plugin": "^1.0.0",
     "cross-env": "^5.2.0",
-    "extract-text-webpack-plugin": "^3.0.2",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "html-webpack-plugin": "^3.2.0",
     "vue-template-compiler": "^2.5.17",
     "webpack-cli": "^3.1.2",
